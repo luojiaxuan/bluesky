@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
     # Create a window with a stack text box and a command line
     win = QWidget()
-    win.setWindowTitle('Example external client for BlueSky')
+    win.setWindowTitle('Ground Commander Client')
     layout = QVBoxLayout()
     win.setLayout(layout)
 

@@ -154,7 +154,8 @@ class Client:
                 if eventname == b'STACK':
                     stack(pydata, sender_id=self.sender_id)
                 elif eventname == b'ECHO':
-                    self.echo(**pydata, sender_id=self.sender_id)
+                    #self.echo(**pydata, sender_id=self.sender_id)
+                    self.echo(**pydata)
                 elif eventname == b'NODESCHANGED':
                     self.servers.update(pydata)
                     self.nodes_changed.emit(pydata)

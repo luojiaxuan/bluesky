@@ -196,6 +196,12 @@ class RadarWidget(glh.RenderWidget):
         if not self.initialized:
             return False
 
+        zoom = None
+        pan = 7.4835, 1.675
+        absolute =True
+
+
+
         if pan:
             # Absolute pan operation
             if absolute:

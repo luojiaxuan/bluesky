@@ -594,8 +594,7 @@ DBBN, Natitingou Airport, 10.317, 1.383, Small, 3900, BN,1512
 DBBO, Porga Airport, 11.033, 0.983, Small, 4100, BN,531 
 DBBP, Parakou Airport, 9.358, 2.61, Small, 5200, BN,1266 
 DBBR, Bembereke Airport, 10.283, 2.7, Small, 3600, BN,1188 
-DBBS, Sav\xc3\xa9 Airport, 8.018, 2.465, Small, , BN,597 
-DFCA, Kaya Airport, 13.067, -1.1, Small, , UV,984 
+DFCA, Kaya Airport, 13.067, -1.1, Small, , UV,984
 DFCB, Barsalogho Airport, 13.4, -1.067, Small, , UV,1083 
 DFCC, Ouahigouya Airport, 13.567, -2.417, Small, 3000, UV,1106 
 DFCD, Didyr Airport, 12.55, -2.617, Small, , UV,958 
@@ -736,7 +735,7 @@ DXAK, Akpaka Airport, 7.583, 1.117, Small, 2900, TO,689
 DXDP, Djangou Airport, 10.8, 0.25, Small, 3900, TO,886 
 DXKP, Kolokope Airport, 7.8, 1.283, Small, 2600, TO,591 
 DXMG, Sansann\xc3\xa9-Mango Airport, 10.373, 0.471, Small, 3900, TO,460 
-DXNG, NIAMTOUGOU INTERNATIONAL, 9.767, 1.091, Medium, 8202, TO,1515 
+DXNG, NIAMTOUGOU INTERNATIONAL, 9.767, 1.091, Medium, 8202, TO,1515
 DXSK, Sokod\xc3\xa9 Airport, 8.983, 1.15, Small, 3200, TO,1214 
 DXXX, GNASSINGBE EYADEMA INTL, 6.166, 1.255, Medium, 9847, TO,72 
 EBAM, Amougies Airport, 50.74, 3.485, Small, 2000, BE,49 
