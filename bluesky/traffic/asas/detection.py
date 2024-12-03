@@ -2,6 +2,7 @@
 import numpy as np
 
 import bluesky as bs
+from bluesky.stack.cmdparser import Command
 from bluesky.tools.aero import ft, nm
 from bluesky.core import Entity
 from bluesky.stack import command
@@ -210,9 +211,12 @@ class ConflictDetection(Entity, replaceable=True):
         """
         Handles aircraft collision by deleting colliding aircraft from the simulation.
         """
+        collide_drone_list = []
         for pair in colliding_pairs:
             bs.traf.deleteByAcid(pair[0])
-            print(f"Collision detected and removed: Aircraft {pair[0]}")
+            collide_drone_list.append(pair[0])
+        text = f"{bs.sim.utc}, {collide_drone_list[0]} and  {collide_drone_list[1]} in Collision"
+        bs.scr.echo(text)
 
     def update(self, ownship, intruder):
         ''' Perform an update step of the Conflict Detection implementation. '''

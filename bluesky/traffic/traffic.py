@@ -390,7 +390,6 @@ class Traffic(Entity):
         """Delete an aircraft"""
         # If this is a multiple delete, sort first for list delete
         # (which will use list in reverse order to avoid index confusion)
-        print("start deleting", idx)
         if isinstance(idx, Collection):
             idx = np.sort(idx)
 

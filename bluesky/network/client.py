@@ -175,7 +175,7 @@ class Client:
                 strmname = msg[0][:-5]
                 sender_id = msg[0][-5:]
                 if self._getroute(sender_id) is None:
-                    print('Client: Skipping stream data from unknown node')
+                    #print('Client: Skipping stream data from unknown node')
                     return False
                 pydata = msgpack.unpackb(msg[1], object_hook=decode_ndarray, raw=False)
                 self.stream(strmname, pydata, sender_id)
