@@ -187,7 +187,7 @@ def initbasecmds():
             if isinstance(a[0], str)
             else bs.traf.groups.delgroup(a[0])
             if hasattr(a[0], "groupname")
-            else bs.traf.delete(a),
+            else handle_default(a),
             "Delete command (aircraft, wind, area)",
         ],
 
@@ -475,6 +475,10 @@ def distcalc(lat0, lon0, lat1, lon1):
         return True, "QDR = %.2f deg, Dist = %.3f nm" % (qdr % 360.0, dist)
     except:
         return False, "Error in dist calculation."
+
+def handle_default(a):
+    print(f"Value passed to the last else: {a}")
+    return bs.traf.delete(a)
 
 
 def setscenpath(newpath):

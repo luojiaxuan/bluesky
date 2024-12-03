@@ -23,7 +23,6 @@ def intercept_and_modify(packet):
                      TCP(sport=packet[TCP].sport, dport=packet[TCP].dport, seq=packet[TCP].seq, ack=packet[TCP].ack,
                          flags="PA") / \
                      modified_payload
-        print(packet[TCP].seq)
 
         # Recalculate checksums for IP and TCP layers
         del new_packet[IP].chksum
@@ -35,5 +34,4 @@ def intercept_and_modify(packet):
 
 
 # Sniff packets and apply the modification function
-print(f"Sniffing packets on port {TARGET_PORT}...")
-sniff(filter=f"tcp and port {TARGET_PORT} or tcp port 62626", prn=intercept_and_modify, store=0)
+sniff(filter=f"tcp port {TARGET_PORT}", prn=intercept_and_modify, store=0)

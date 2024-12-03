@@ -16,7 +16,7 @@ class ConflictDetection(Entity, replaceable=True):
     def __init__(self):
         super().__init__()
         ## Default values
-        # [m] Horizontal separation minimum for detection
+        # [m] Horizontal separation minimum for detecti
         self.rpz_def = bs.settings.asas_pzr * nm
         self.global_rpz = True
         # [m] Vertical separation minimum for detection
@@ -124,8 +124,8 @@ class ConflictDetection(Entity, replaceable=True):
     @command(name='ZONER', aliases=('PZR', 'RPZ', 'PZRADIUS'))
     def setrpz(self, radius: float = -1.0, *acidx: 'acid'):
         ''' Set the horizontal separation distance (i.e., the radius of the
-            protected zone) in nautical miles. 
-            
+            protected zone) in nautical miles.
+
             Arguments:
             - radius: The protected zone radius in nautical miles
             - acidx: Aircraft id(s) or group. When this argument is not provided the default PZ radius is changed.
@@ -206,14 +206,30 @@ class ConflictDetection(Entity, replaceable=True):
             self.dtnolook[:] = time
         return True, f'Setting default CD no-look to {time} sec'
 
+    def handle_collision(self, colliding_pairs):
+        """
+        Handles aircraft collision by deleting colliding aircraft from the simulation.
+        """
+        for pair in colliding_pairs:
+            bs.traf.deleteByAcid(pair[0])
+            print(f"Collision detected and removed: Aircraft {pair[0]}")
+
     def update(self, ownship, intruder):
         ''' Perform an update step of the Conflict Detection implementation. '''
         self.confpairs, self.lospairs, self.inconf, self.tcpamax, self.qdr, \
             self.dist, self.dcpa, self.tcpa, self.tLOS = \
                 self.detect(ownship, intruder, self.rpz, self.hpz, self.dtlookahead)
 
-        # confpairs has conflicts observed from both sides (a, b) and (b, a)
-        # confpairs_unique keeps only one of these
+        # Detect collisions
+        collision_pairs = [
+            (ownship.id[i], intruder.id[j])
+            for i, j in enumerate(range(len(self.dist)))
+            if self.dist[i] < self.rpz[i] and abs(ownship.alt[i] - intruder.alt[j]) < self.hpz[i]
+        ]
+        if collision_pairs:
+            self.handle_collision(collision_pairs)
+
+        # Unique conflict pairs update remains unchanged
         confpairs_unique = {frozenset(pair) for pair in self.confpairs}
         lospairs_unique = {frozenset(pair) for pair in self.lospairs}
 
@@ -225,13 +241,10 @@ class ConflictDetection(Entity, replaceable=True):
         self.lospairs_unique = lospairs_unique
 
     def detect(self, ownship, intruder, rpz, hpz, dtlookahead):
-        ''' Detect any conflicts between ownship and intruder.
-            This function should be reimplemented in a subclass for actual
-            detection of conflicts. See for instance
-            bluesky.traffic.asas.statebased.
-        '''
+        ''' Detect any conflicts between ownship and intruder. '''
         confpairs = []
         lospairs = []
+        collision_pairs = []
         inconf = np.zeros(ownship.ntraf)
         tcpamax = np.zeros(ownship.ntraf)
         qdr = np.array([])
@@ -239,4 +252,15 @@ class ConflictDetection(Entity, replaceable=True):
         dcpa = np.array([])
         tcpa = np.array([])
         tLOS = np.array([])
+
+        # Example logic for detecting collisions
+        for i in range(len(ownship)):
+            for j in range(len(intruder)):
+                horizontal_dist = np.linalg.norm(ownship.pos[i] - intruder.pos[j])
+                vertical_dist = abs(ownship.alt[i] - intruder.alt[j])
+                if horizontal_dist < rpz[i] and vertical_dist < hpz[i]:
+                    collision_pairs.append((i, j))
+
+        # Add collision handling here or pass back as a return value
         return confpairs, lospairs, inconf, tcpamax, qdr, dist, dcpa, tcpa, tLOS
+

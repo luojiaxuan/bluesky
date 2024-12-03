@@ -1,5 +1,8 @@
 """ BlueSky traffic implementation."""
 from __future__ import print_function
+
+import traceback
+
 try:
     from collections.abc import Collection
 except ImportError:
@@ -377,10 +380,17 @@ class Traffic(Entity):
         self.ap.selaltcmd(len(self.lat) - 1, altref, acvs)
         self.vs[-1] = acvs
 
+    def deleteByAcid(self, acid: object):
+        idx = self.id2idx(acid)
+        return self.delete(idx)
+
+
+
     def delete(self, idx):
         """Delete an aircraft"""
         # If this is a multiple delete, sort first for list delete
         # (which will use list in reverse order to avoid index confusion)
+        print("start deleting", idx)
         if isinstance(idx, Collection):
             idx = np.sort(idx)
 
@@ -455,7 +465,7 @@ class Traffic(Entity):
         self.swhdgsel = np.abs(delhdg) > np.abs(bs.sim.simdt * turnrate)
 
         # Update heading
-        self.hdg = np.where(self.swhdgsel, 
+        self.hdg = np.where(self.swhdgsel,
                             self.hdg + bs.sim.simdt * turnrate * np.sign(delhdg), self.aporasas.hdg) % 360.0
 
         # Update vertical speed (alt select, capture and hold autopilot mode)
